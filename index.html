@@ -1,26 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>DeskFlux AI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>DeskFlux AI</title>
+<style>
+body {
+  background: #0f0f1a;
+  color: white;
+  font-family: Arial;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#chat {
+  width: 95%;
+  max-width: 500px;
+  background: #1a1a2e;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+#messages {
+  height: 380px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  background: #111;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 8px;
+}
+
+button {
+  background: linear-gradient(45deg, #6a0dad, #0000ff);
+  color: white;
+  font-size: 16px;
+}
+</style>
 </head>
 <body>
 
-  <div class="app">
-    <h1>🤖 DeskFlux AI</h1>
-    <p>Sua assistente virtual amigável</p>
+<div id="chat">
+<h2>🤖 DeskFlux AI</h2>
+<div id="messages"></div>
+<input id="userInput" placeholder="Digite sua pergunta...">
+<button onclick="sendMessage()">Enviar</button>
+</div>
 
-    <div class="chat-box" id="chat"></div>
+<script>
+async function sendMessage(){
+  const input = document.getElementById("userInput");
+  const message = input.value;
+  if(!message) return;
 
-    <input type="text" id="userInput" placeholder="Digite sua pergunta...">
-    <button onclick="sendMessage()">Enviar</button>
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML += `<p><b>Você:</b> ${message}</p>`;
 
-    <button onclick="createImage()">🎨 Criar Imagem</button>
-  </div>
+  input.value = "";
 
-  <script src="app.js"></script>
+  const response = await fetch("**AQUI VEM O LINK DO PROXY**", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message })
+  });
+
+  const data = await response.json();
+
+  messagesDiv.innerHTML += `<p><b>DeskFlux:</b> ${data.reply}</p>`;
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+</script>
 </body>
 </html>
