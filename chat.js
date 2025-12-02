@@ -1,3 +1,5 @@
+const chat = document.getElementById("chat");
+
 async function sendMessage(){
   const input = document.getElementById("userInput");
   const msg = input.value;
@@ -24,4 +26,8 @@ async function sendMessage(){
   } catch (error) {
     chat.innerHTML += `<p><strong>DeskFlux:</strong> Erro ao conectar com a IA.</p>`;
   }
+}
+
+function createImage(){
+  chat.innerHTML += `<p><strong>DeskFlux:</strong> 🎨 Em breve a geração de imagens estará ativa.</p>`;
 }
