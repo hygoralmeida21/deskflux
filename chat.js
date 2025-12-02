@@ -1,11 +1,27 @@
-export default function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método não permitido" });
+async function sendMessage(){
+  const input = document.getElementById("userInput");
+  const msg = input.value;
+
+  if(msg === "") return;
+
+  chat.innerHTML += `<p><strong>Você:</strong> ${msg}</p>`;
+  input.value = "";
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ mensagem: msg })
+    });
+
+    const data = await response.json();
+
+    chat.innerHTML += `<p><strong>DeskFlux:</strong> ${data.resposta}</p>`;
+    chat.scrollTop = chat.scrollHeight;
+
+  } catch (error) {
+    chat.innerHTML += `<p><strong>DeskFlux:</strong> Erro ao conectar com a IA.</p>`;
   }
-
-  const { message } = req.body;
-
-  res.status(200).json({
-    reply: `Recebi: ${message} 🤖`
-  });
 }
