@@ -24,11 +24,15 @@ export default async function handler(req, res) {
 
     const dados = await resposta.json();
 
+    if (!dados.choices || !dados.choices[0]) {
+      return res.status(500).json({ error: "Resposta inválida da IA", dados });
+    }
+
     res.status(200).json({
       resposta: dados.choices[0].message.content
     });
 
   } catch (erro) {
-    res.status(500).json({ error: "Erro na IA" });
+    res.status(500).json({ error: "Erro na IA", detalhe: erro.message });
   }
 }
